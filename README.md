@@ -1,15 +1,10 @@
 plugplat
 ========
 
---------
-
 
 A plug.dj bookmarklet for the modern user.
 ---------------------------------
 
---------
-
-------------
 
 Installation
 ============

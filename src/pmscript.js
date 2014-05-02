@@ -130,8 +130,14 @@ function parseCmd(value) {//Parse commands
 
 //Autowoot
 	if(value.indexOf("/autowoot")===0){
-		if(value.indexOf("/autowoot -f")===0) fastAuto = true;
-		autowoot = !autowoot;
+		if(value.indexOf("/autowoot -f")===0){
+			fastAuto = true;
+			API.chatLog("Instant autowoot forced");
+		}
+		if(value.indexOf("/autowoot -s")===0){
+			fastAuto = true;
+			API.chatLog("Delayed autowoot forced");
+		}
 		if(autowoot) API.chatLog("Autowoot enabled");
 		else API.chatLog("Autowoot disabled");
 	}

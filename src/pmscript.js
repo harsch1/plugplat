@@ -1,12 +1,18 @@
-$('#pmscript-js').remove();
+//If you steal this code, you're a jerk.
 
-API.chatLog("PMScript now online!");
-API.chatLog("Type \"/pm @person -message\" " );
+API.chatLog("plugplat now online!");
 
 API.on(API.HISTORY_UPDATE, nextSong);
-
 API.on(API.CHAT, parseMsg);
-function parseMsg(data) {
+API.on(API.CHAT_COMMAND, parseCmd);
+
+var tempVol = 50;
+var afkCheck = false;
+var autowoot = true;
+var tempmuted = false
+var fastAuto = false;
+
+function parseMsg(data) {//Parses incoming messages
 	var message = data.message;
 	if (message.indexOf("!pm ")==0){
 		message = message.substring(4);
@@ -23,7 +29,8 @@ function parseMsg(data) {
 		}
 	}
 }
-function sendAFKMessage(toUser){
+
+function sendAFKMessage(toUser){//Sends afk messages when afkcheck is enabled
 var rand = Math.random();
 	if(rand<0.10){
 		API.sendChat("Ya sorry I'm gotta take a shit I'll be back in a sec");
@@ -38,16 +45,31 @@ var rand = Math.random();
 		API.sendChat("Ya sorry I'm busy working I'll be back in a sec");
 	}
 	else{
-		API.sendChat("Ya sorry I'm busy with something I'll be back in a sec");
+		API.sendChat("Sorry I'm busy with something I'll be back in a sec");
 	}
 }
 
-var tempVol = 50;
-var afkCheck = false;
-var autowoot = true;
-var tempmuted = false;
-API.on(API.CHAT_COMMAND, sendMsg);
-function sendMsg(value) {
+function nextSong(){//Called when the next song is played
+	if(tempmuted){
+		if(API.getVolume() === 0){
+			API.chatLog("Resuming volume");
+			window.setTimeout(function(){API.setVolume(tempVol)},100);
+			tempmuted = false;	
+		}
+		else tempmuted = false;
+	}
+	if(autowoot){
+		var rand = Math.random();
+		rand= rand *3;
+		rand++;
+		if(fastAuto) rand = 0;
+		window.setTimeout(function(){$("#woot").click();},(rand* 5000)); 
+	}
+}
+
+function parseCmd(value) {//Parse commands
+
+//Private Message	
 	if(value.indexOf("/pm ")==0){
 		var secret = value.substring(4);
 		var name = secret.substring(1, (secret.indexOf("-")-1));
@@ -63,8 +85,15 @@ function sendMsg(value) {
 			}
 		}
 	}
+
+//Mute
 	if(value.indexOf("/mute")===0){
-		if(value.indexOf("/mute 1")!=0){
+		if(value.indexOf("/mute -f")!=0){
+			if(API.getVolume() === 0){
+				API.chatLog("Unmuting");
+				API.setVolume(tempVol);
+				if(tempmuted) tempmuted = false;
+			}
 			API.chatLog("Muting volume for one song");
 			tempVol = API.getVolume();
 			API.setVolume(0);
@@ -78,11 +107,14 @@ function sendMsg(value) {
 	}
 	if(value.indexOf("/unmute")===0){
 		if(API.getVolume() === 0){
-				API.setVolume(tempVol);
-				if(tempmuted) tempmuted = false;
+			API.chatLog("Unmuting");
+			API.setVolume(tempVol);
+			if(tempmuted) tempmuted = false;
 		}
 		else tempmuted = false
 	}
+
+//AFK Check	
 	if(value.indexOf("/afkcheck")===0){
 		afkCheck = !afkCheck;
 		if(afkCheck){
@@ -95,26 +127,34 @@ function sendMsg(value) {
 	if(value.indexOf("/donger")===0){
 		API.chatLog("ヽ༼ຈل͜ຈ༽ﾉ Raise those dongers ヽ༼ຈل͜ຈ༽ﾉ ");
 	}
+
+//Autowoot
 	if(value.indexOf("/autowoot")===0){
-	autowoot = !autowoot;
+		if(value.indexOf("/autowoot -f")===0) fastAuto = true;
+		autowoot = !autowoot;
 		if(autowoot) API.chatLog("Autowoot enabled");
 		else API.chatLog("Autowoot disabled");
 	}
-}
 
-function nextSong(){
-	if(tempmuted){
-		if(API.getVolume() === 0){
-			API.chatLog("Resuming volume");
-			window.setTimeout(function(){API.setVolume(tempVol)},100);
-			tempmuted = false;	
+//Announce
+	if(value.indexOf("/announce ")===0){
+		if(API.hasPermission(null, API.ROLE.BOUNCER)){
+			var userlist = API.getUsers();
+			var output = "!an";
+			for (var u = 0; u < userlist.length; u++){
+				var name = " @" + userlist[u].username;
+				if ((name.length + output) > 255){
+					API.sendChat(output);
+					output = "!an";
+				}
+				output = output.concat(name);
+			}
+			API.sendChat(output);
+			var msg = "";
+			msg = msg.concat("*** ");
+			msg = msg.concat(value.substring(10));
+			msg = msg.concat(" ***");
+			API.sendChat(msg);
 		}
-		else tempmuted = false
-	}
-	if(autowoot){
-		var rand = Math.random();
-		rand= rand *3;
-		rand++;
-		window.setTimeout(function(){$("#woot").click();},(rand* 5000)); 
 	}
 }

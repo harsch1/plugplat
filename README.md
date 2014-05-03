@@ -39,7 +39,7 @@ Command                | Result
 --------|:------
 ```/pm @username -message``` | <ul><li>Sends a private message to another user.</li><li>**Requires PlatBot.**</li><li> Note: Since code is public, message decryption is too. Don't sent credit cards and actual private junk.</li></ul>
 ```/mute``` | <ul><li>Mutes the current song.</li><li>When the song is done, it will unmute back to previous volume.</li><li>Use ```/mute -f``` to mute for more than one song.</li><li>User ```/unmute``` to unmute.</li></ul>
-```/afkcheck``` | <ul><li>Toggles automatic afk replies.</li><li>If endabled, will send messages after a small delay when @mentioned saying you are busy. </li></ul>
+```/afkcheck``` | <ul><li>Toggles automatic afk replies.</li><li>If enabled, will send messages after a small delay when @mentioned saying you are busy. </li></ul>
 ```/autowoot``` | <ul><li>Toggles Autowoot (on by default).</li><li>Autowoot activates after 5-20 seconds to be more realistic then other plugins.</li><li>For instant autowoot use ```/autowoot -fast```</li></ul>
 ```/announce message``` | <ul><li>Mentions everyone in the room and sends the message surrounded by stars.</li>Ensures that mention message doesn't exceed message limit and splits names across multiple messages if needed.</li><li>If the PlatBot is running then the mention message will be deleted.</li></ul>
 

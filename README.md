@@ -14,7 +14,7 @@ For Users
 
 Drag the following to your bookmarks bar or save the text as a bookmark.
 ```
-javascript:(function(){$.getScript('http://goo.gl/ov8RPo');}());
+javascript:(function(){$.getScript('http://goo.gl/UeyklL');}());
 ```
 
 To use it, click the bookmark **only once** while in a plug.dj room
@@ -28,7 +28,7 @@ Make sure the user running the bot has enough permission to delete messages.
 
 To install, do the same as above with the following text:
 ```
-javascript:(function(){$.getScript('http://goo.gl/hZQ0Uu');}());
+javascript:(function(){$.getScript('http://goo.gl/6IosFq');}());
 ```
 
 
